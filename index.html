@@ -1,19 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>SH4NER | S4R - Streaming Influencer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    --bg-top: #07121a;
+    --bg-bottom: #001017;
+    --card-bg: #031016;
+    --accent-cyan: #00E0FF;
+    --accent-cyan-2: #72F4FF;
+    --muted-white: #c7dfe6;
+    --thumbnail-yellow: #ffd700;
+    --thumbnail-green: #00ff66;
+    --text-white: #ffffff;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+    color: var(--muted-white);
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    font-size: clamp(12px, 3vw, 14px);
+    overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    scrollbar-width: none;
+}
+
+body {
+    -ms-overflow-style: none;
+}
+
+.bg-pattern {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle, transparent 0%, var(--bg-top) 90%),
+        repeating-linear-gradient(45deg, rgba(3,22,25,0.18) 0px, rgba(3,22,25,0.18) 2px, transparent 2px, transparent 6px),
+        repeating-linear-gradient(-45deg, rgba(3,22,25,0.18) 0px, rgba(3,22,25,0.18) 2px, transparent 2px, transparent 6px);
+    filter: blur(4px);
+    z-index: -1;
+}
+
+.header {
+    width: clamp(90%, 95vw, 1810px);
+    height: clamp(60px, 15vw, 100px);
+    top: clamp(10px, 2vw, 20px);
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 1;
+    border-radius: clamp(16px, 4vw, 32px);
+    border: 1px solid var(--accent-cyan);
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+    padding: clamp(8px, 2vw, 12px);
+}
+
+.header .left-icons {
+    display: flex;
+    align-items: center;
+    width: 1/3;
+}
+
+.header .left-icons nav {
+    display: flex;
+    gap: 5px;
+}
+
+.header .left-icons nav a {
+    color: #dfefff/95;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: clamp(12px, 3vw, 14px);
+    letter-spacing: 0.03em;
+    padding: 8px 12px;
+    transition: all 180ms cubic-bezier(.2,.9,.3,1);
+}
+
+.nav-active {
+    background: rgba(167, 236, 255, 1);
+    box-shadow: 0 6px 30px rgba(0,224,255,0.36), inset 0 -2px 8px rgba(255,255,255,0.06);
+    color: #000000 !important;
+    border-radius: 15px;
+    border: 1px solid var(--accent-cyan);
+    transition: all 180ms cubic-bezier(.2,.9,.3,1);
+    width: clamp(100px, 12vw, 70px);
+    height: clamp(40px, 5vw, 48px);
+    font-size: clamp(10px, 2.5vw, 12px);
+    padding: 16px 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(0deg);
+    opacity: 1;
+    text-transform: uppercase;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+}
+
+.nav-active:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,224,255,0.48);
+}
+
+.header .logo-container {
+    display: flex;
+    justify-content: center;
+    width: 1/3;
+}
+
+.header .logo-container img {
+    height: clamp(48px, 10vw, 70px);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.header .right-icons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 1/3;
+    gap: clamp(4px, 1vw, 8px);
+}
+
+.header .right-icons .feather-icon i {
+    color: var(--text-white);
+    width: clamp(16px, 4vw, 20px);
+    height: clamp(16px, 4vw, 20px);
+}
+
+.header .right-icons .icon-fallback {
+    display: none;
+    font-size: clamp(10px, 2.5vw, 12px);
+    color: var(--text-white);
+}
+
+.header .right-icons .feather-icon:empty + .icon-fallback {
+    display: inline;
+}
+
+.cta-button {
+    background: rgba(167, 236, 255, 1);
+    box-shadow: 0 6px 30px rgba(0,224,255,0.36), inset 0 -2px 8px rgba(255,255,255,0.06);
+    color: #021d22;
+    border-radius: 15px;
+    border: 1px solid var(--accent-cyan);
+    transition: all 180ms cubic-bezier(.2,.9,.3,1);
+    width: clamp(160px, 20vw, 200px);
+    height: clamp(40px, 5vw, 48px);
+    font-size: clamp(10px, 2.5vw, 12px);
+    padding: 16px 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(0deg);
+    opacity: 1;
+    text-transform: uppercase;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+}
+
+.cta-button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,224,255,0.48);
+}
+
+.hero-title {
+    text-shadow: 0 4px 24px rgba(0,224,255,0.38), 0 1px 0 rgba(255,255,255,0.02);
+    font-size: clamp(24px, 6vw, 36px);
+    color: var(--text-white);
+    white-space: nowrap;
+    text-align: center;
+}
+
+.hero-text {
+    color: var(--text-white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-text p {
+    font-size: clamp(10px, 3vw, 12px);
+    line-height: 1.5;
+    text-align: center;
+    max-width: clamp(500px, 80vw, 600px);
+}
+
+.primary-cta {
+    background: rgba(215, 251, 255, 0.85);
+    border: 1px solid #00d9ff;
+    color: #02343a;
+    box-shadow: 0 12px 40px rgba(0,224,255,0.22);
+    transition: all 180ms cubic-bezier(.2,.9,.3,1);
+    width: clamp(200px, 50vw, 320px);
+    height: clamp(40px, 10vw, 56px);
+    font-size: clamp(12px, 3vw, 16px);
+    border-radius: clamp(8px, 2vw, 12px);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.primary-cta:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 60px rgba(0,224,255,0.28);
+}
+
+.shorts-container, .videos-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 30px;
+    padding-bottom: clamp(8px, 2vw, 16px);
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    position: relative;
+    justify-content: center;
+    margin: 0;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 1;
+}
+
+.shorts-container::-webkit-scrollbar, .videos-container::-webkit-scrollbar {
+    display: none;
+}
+
+.shorts-container::before, .shorts-container::after,
+.videos-container::before, .videos-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 150px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.shorts-container::before, .videos-container::before {
+    left: 0;
+    background: linear-gradient(90deg, rgba(0,14,15,0.5) 0%, rgba(0,14,15,0) 100%);
+}
+
+.shorts-container::after, .videos-container::after {
+    right: 0;
+    background: linear-gradient(270deg, rgba(0,14,15,0.5) 0%, rgba(0,14,15,0) 100%);
+}
+
+.short-card {
+    transition: all 250ms cubic-bezier(.2,.9,.3,1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 8px 30px rgba(0,224,255,0.1);
+    min-width: clamp(140px, 45vw, 180px);
+    max-width: clamp(160px, 50vw, 200px);
+    height: clamp(240px, 80vw, 320px);
+    border-radius: clamp(8px, 2vw, 12px);
+    position: relative;
+    overflow: hidden;
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+}
+
+.video-card {
+    transition: all 250ms cubic-bezier(.2,.9,.3,1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 8px 30px rgba(0,224,255,0.1);
+    min-width: clamp(140px, 45vw, 180px);
+    max-width: clamp(160px, 50vw, 200px);
+    height: clamp(140px, 45vw, 180px);
+    border-radius: clamp(8px, 2vw, 12px);
+    position: relative;
+    overflow: hidden;
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+}
+
+.short-card img, .video-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.short-card:hover, .video-card:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 12px 40px rgba(0,224,255,0.15);
+}
+
+.short-card .text-content, .video-card .text-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 60%, transparent);
+    padding: clamp(6px, 1.5vw, 10px);
+    color: var(--text-white);
+}
+
+.short-card .text-content .title, .video-card .text-content .title {
+    font-size: clamp(12px, 3vw, 14px);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: clamp(3px, 0.8vw, 5px);
+    text-align: center;
+}
+
+.short-card .text-content .description, .video-card .text-content .description {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: clamp(8px, 2vw, 10px);
+    line-height: 1.3;
+    letter-spacing: 0%;
+    text-align: center;
+    color: var(--muted-white);
+    text-decoration: none;
+    text-decoration-style: solid;
+    text-decoration-thickness: 0%;
+    text-underline-offset: 0%;
+    text-decoration-skip-ink: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.play-icon {
+    animation: pulse 1.6s infinite ease-in-out;
+    width: clamp(36px, 9vw, 48px);
+    height: clamp(36px, 9vw, 48px);
+    border-radius: 50%;
+}
+
+.play-icon div {
+    border-top: clamp(8px, 2vw, 12px) solid transparent;
+    border-bottom: clamp(8px, 2vw, 12px) solid transparent;
+    border-left: clamp(12px, 3vw, 20px) solid white;
+    margin-left: 1px;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity:1 }
+    50% { transform: scale(1.06); opacity:0.92 }
+    100% { transform: scale(1); opacity:1 }
+}
+
+.footer {
+    background: #02080a;
+    padding: clamp(8px, 2vw, 12px) 0;
+}
+
+.social-heading {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    font-size: 72px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    color: var(--text-white);
+    text-decoration: underline;
+    text-decoration-style: solid;
+    text-decoration-color: #00BAEC;
+    text-decoration-thickness: 10%;
+    text-underline-offset: 0%;
+    text-decoration-skip-ink: auto;
+    margin-bottom: clamp(16px, 4vw, 24px);
+    text-shadow: 0 6px 20px rgba(0,224,255,0.22);
+}
+
+.shorts-heading, .videos-heading {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 48px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    color: var(--text-white);
+    margin-bottom: clamp(16px, 4vw, 24px);
+}
+
+.billboard {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.billboard.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.billboard-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    margin: 0 auto;
+    width: clamp(400px, 80%, 700px);
+    padding: clamp(16px, 4vw, 24px);
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* full horizontal centering */
+    text-align: center;
+    margin-top: 30px
+}
+
+.billboard.top-vector-image {
+    width: clamp(100px, 20vw, 150px);
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto clamp(8px, 2vw, 12px) auto;
+}
+
+.billboard.title {
+    font-family: Impact, sans-serif;
+    font-weight: 400;
+    font-size: clamp(60px, 15vw, 100px);
+    line-height: 100%;
+    background: linear-gradient(270deg, #85E069 0%, #4DE087 30%, #3DE092 60%, #2DE39A 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 auto clamp(8px, 2vw, 12px) auto;
+    max-width: 400px;
+}
+
+@font-face {
+    font-family: 'Acroterion JF';
+    src: url('font/ACROTERIONJF-Regular.woff2') format('woff2'),
+         url('font/ACROTERIONJF-Regular.woff') format('woff'),
+         url('font/ACROTERION JF REGULAR.TTF') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+.billboard.playnow {
+    font-family: 'Acroterion JF', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 150px; /* FIXED SIZE ACROSS ALL SCREENS */
+    line-height: 1;
+    letter-spacing: 0;
+    text-align: center;
+    color: #ffffff;
+    text-shadow: 4px 4px 20px rgba(66, 136, 31, 0.85);
+    transform: translateY(-80px); /* moves text UP by 50px */
+}
+
+.billboard.description {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: clamp(14px, 2vw, 14px);
+    color: var(--muted-white);
+    max-width: 500px;
+    margin: 0 auto clamp(8px, 2vw, 12px) auto;
+    transform: translateX(10px);
+     transform: translateY(-40px); /* moves text UP by 50px */
+}
+
+.billboard.vector-image {
+    width: clamp(100px, 20vw, 150px);
+    height: auto;
+    object-fit: contain;
+    border-radius:30px;
+    margin: clamp(8px, 2vw, 12px) auto;
+     transform: translateY(-70px); /* moves text UP by 50px */
+}
+
+.billboard.subtext {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+     font-size: clamp(14px, 2vw, 14px);
+    line-height: 1.5;
+    color: var(--muted-white);
+    max-width: 500px;
+    margin: 0 auto clamp(8px, 2vw, 12px) auto;
+    transform: translateX(10px);
+}
+/* Mobile detection overlay */
+.mobile-warning {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-top);
+    z-index: 1001;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--text-white);
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(16px, 4vw, 18px);
+    padding: 20px;
+}
+
+@media (max-width: 1024px) {
+    .mobile-warning {
+        display: flex;
+    }
+    body.mobile-detected .content-wrapper {
+        display: none;
+    }
+}
+/* --- MEDIA QUERIES --- */
+@media (min-width: 768px) {
+    .billboard.title {
+        font-size: clamp(80px, 12vw, 120px);
+        max-width: 500px;
+    }
+
+    .billboard.playnow {
+        font-size: 150px; /* still fixed */
+        max-width: 600px;
+    }
+
+    .billboard.description,
+    .billboard.subtext {
+        font-size: clamp(12px, 2vw, 14px);
+        max-width: 500px;
+    }
+
+    .billboard.top-vector-image,
+    .billboard.vector-image {
+        width: clamp(120px, 15vw, 180px);
+    }
+}
+
+@media (min-width: 1025px) {
+    .billboard.title {
+        font-size: clamp(100px, 15vw, 160px);
+        max-width: 600px;
+    }
+
+    .billboard.playnow {
+        font-size: 150px; /* stays fixed */
+        max-width: 700px;
+    }
+
+    .billboard.description {
+        font-size: clamp(14px, 2vw, 14px);
+        max-width: 600px;
+    }
+
+    .billboard.subtext {
+         font-size: clamp(14px, 2vw, 14px);
+        max-width: 600px;
+    }
+
+    .billboard.top-vector-image,
+    .billboard.vector-image {
+        width: clamp(150px, 15vw, 200px);
+    }
+}
+
+@media (max-width: 320px) {
+    .billboard-text {
+        width: 100%;
+        padding: clamp(8px, 2vw, 12px);
+    }
+
+    .billboard.top-vector-image,
+    .billboard.vector-image {
+        width: clamp(80px, 25vw, 120px);
+    }
+
+    .billboard.title {
+        font-size: clamp(40px, 12vw, 60px);
+        max-width: clamp(250px, 90vw, 300px);
+    }
+
+    .billboard.playnow {
+        font-size: 150px; /* stays fixed even on tiny screens */
+        max-width: clamp(250px, 90vw, 300px);
+    }
+
+    .billboard.description,
+    .billboard.subtext {
+         font-size: clamp(14px, 2vw, 14px);
+        max-width: clamp(250px, 90vw, 300px);
+    }
+}
+
+
+.hero {
+    position: relative;
+    background-image: url('img/4_5938341132000829203.gif');
+    background-size: 1920px 868px;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: rotate(0deg);
+    opacity: 1;
+    min-height: 868px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.image-left,
+.image-right {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    z-index: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.image-left {
+    left: 0;
+    width: 60vw;
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+    animation: hoverBounce 2s ease-in-out infinite;
+}
+
+.image-right {
+    right: 0;
+    width: 40vw;
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+    animation: hoverBounce 2s ease-in-out infinite;
+}
+
+.image-left img,
+.image-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 1;
+}
+
+@keyframes hoverBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@media (max-width: 640px) {
+    .image-left,
+    .image-right {
+        display: none;
+    }
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.742);
+    z-index: 1;
+}
+
+.max-w-7xl {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-text {
+    padding: clamp(16px, 4vw, 24px);
+}
+
+.primary-cta {
+    background-color: #aeefff;
+    padding: 10px 20px;
+    color: #000;
+    transition: background-color 0.3s;
+}
+
+.primary-cta:hover {
+    background-color: #8cdbff;
+}
+
+@media (max-width: 768px) {
+    .image-left img,
+    .image-right img {
+        width: 50vw;
+        height: 100%;
+    }
+
+    .hero-text {
+        padding: 4px;
+    }
+
+    .max-w-7xl {
+        padding: 0 16px;
+    }
+}
+
+.hero > div {
+    position: relative;
+    z-index: 2;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid var(--accent-cyan);
+    display: none;
+    z-index: 50;
+}
+
+.news-ticker {
+    position: absolute;
+    top: calc(100% - 80px);
+    left: 0;
+    right: 0;
+    background: #00546A33;
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--accent-cyan);
+    border-radius: 16px;
+    color: var(--text-white);
+    font-size: clamp(14px, 3.5vw, 16px);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    overflow: hidden;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    z-index: 4;
+}
+
+.news-ticker ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    animation: ticker 20s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+}
+
+.news-ticker li {
+    padding: 0 clamp(16px, 4vw, 24px);
+    white-space: nowrap;
+}
+
+.news-ticker li:not(:last-child)::after {
+    content: '•';
+    margin: 0 clamp(8px, 2vw, 12px);
+    color: var(--accent-cyan);
+}
+
+@keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@media (min-width: 1025px) {
+    .header {
+        width: clamp(90%, 95vw, 1810px);
+        height: clamp(60px, 15vw, 100px);
+        padding: clamp(8px, 2vw, 12px);
+    }
+
+    .right-icons {
+        gap: clamp(4px, 1vw, 8px);
+    }
+
+    .hero {
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+        justify-content: center;
+    }
+
+    .hero > div {
+        width: clamp(40%, 45vw, 540px);
+        margin-right: 0;
+        text-align: center;
+    }
+
+    .hero-text > span,
+    .hero-title,
+    .hero-text p,
+    .primary-cta {
+        text-align: center;
+        align-self: center;
+    }
+
+    .carousel-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 2000px;
+        margin: 0 auto;
+    }
+
+    .shorts-container, .videos-container {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 30px;
+        padding-left: clamp(16px, 4vw, 32px);
+        padding-right: clamp(16px, 4vw, 32px);
+        position: relative;
+    }
+
+    .shorts-container::-webkit-scrollbar, .videos-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .carousel-shadow {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 3%;
+        z-index: 10;
+        pointer-events: none;
+    }
+
+    .carousel-shadow-left {
+        left: 0;
+        background: #000e0fd6;
+        box-shadow: 40px 0 60px -15px #000000, 20px 0 40px -10px #000000, 10px 0 20px -5px rgba(0, 14, 15, 0.9);
+    }
+
+    .carousel-shadow-right {
+        right: 0;
+        background: #000e0fd6;
+        box-shadow: -40px 0 60px -15px #000000, -20px 0 40px -10px #000000, -10px 0 20px -5px rgba(0, 14, 15, 0.9);
+    }
+
+    .short-card {
+        flex: 0 0 300px;
+        width: 300px;
+        height: 500px;
+        min-width: unset;
+        max-width: unset;
+        scroll-snap-align: center;
+    }
+
+    .video-card {
+        flex: 0 0 300px;
+        width: 300px;
+        height: 300px;
+        min-width: unset;
+        max-width: unset;
+        scroll-snap-align: center;
+    }
+
+    .short-card .text-content .title, .video-card .text-content .title {
+        font-size: clamp(14px, 1.2vw, 16px);
+    }
+
+    .short-card .text-content .description, .video-card .text-content .description {
+        font-size: clamp(10px, 0.9vw, 12px);
+    }
+
+    .social-heading {
+        font-size: 72px;
+    }
+
+    .shorts-heading, .videos-heading {
+        font-size: 48px;
+    }
+
+    .videos-heading {
+        margin-top: clamp(16px, 2vw, 24px);
+    }
+
+    .news-ticker {
+        height: 68px;
+        font-size: clamp(16px, 1.4vw, 18px);
+        top: calc(100% - 100px);
+        backdrop-filter: blur(12px);
+        border-radius: 16px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .header {
+        width: 95%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: clamp(4px, 1vw, 8px);
+    }
+    
+    .header .left-icons {
+        display: none;
+    }
+
+    .header .logo-container {
+        flex-grow: 1;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .header .right-icons {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-grow: 0;
+        gap: clamp(4px, 1vw, 8px);
+    }
+
+    .header .cta-button {
+        display: none;
+    }
+
+    .bottom-nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: clamp(8px, 2vw, 12px);
+    }
+    
+    .hero {
+        flex-direction: column;
+        gap: clamp(16px, 4vw, 24px);
+        background-size: cover;
+        min-height: clamp(600px, 105vw, 560px);
+        justify-content: center;
+    }
+    
+    .hero > div {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        text-align: center;
+    }
+    
+    .hero-text {
+        align-items: center;
+    }
+    
+    .hero-text > span,
+    .hero-title,
+    .hero-text p,
+    .primary-cta {
+        text-align: center;
+        align-self: center;
+    }
+    
+    .primary-cta {
+        width: 100%;
+        max-width: 300px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .social-heading {
+        font-size: clamp(36px, 8vw, 48px);
+    }
+    
+    .shorts-heading, .videos-heading {
+        font-size: clamp(24px, 6vw, 32px);
+    }
+    
+    .videos-heading {
+        margin-bottom: clamp(16px, 4vw, 24px);
+    }
+    
+    .shorts-container, .videos-container {
+        width: 100%;
+        height: auto;
+        top: 0;
+        padding-left: clamp(8px, 2vw, 16px);
+        padding-right: clamp(8px, 2vw, 16px);
+    }
+    
+    .short-card {
+        min-width: clamp(140px, 45vw, 180px);
+        max-width: clamp(160px, 50vw, 200px);
+        height: clamp(240px, 80vw, 320px);
+    }
+    
+    .video-card {
+        min-width: clamp(140px, 45vw, 180px);
+        max-width: clamp(160px, 50vw, 200px);
+        height: clamp(140px, 45vw, 180px);
+    }
+    
+    .short-card img, .video-card img {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        top: auto;
+        left: auto;
+    }
+    
+    .short-card .text-content .description,
+    .video-card .text-content .description {
+        font-size: clamp(8px, 2vw, 10px);
+    }
+    
+    .footer .flex {
+        flex-direction: column;
+        gap: clamp(4px, 1vw, 8px);
+        text-align: center;
+    }
+
+    .news-ticker {
+        height: 52px;
+        font-size: clamp(12px, 3vw, 14px);
+        top: calc(100% - 70px);
+        backdrop-filter: blur(8px);
+        border-radius: 16px;
+    }
+}
+
+@media (max-width: 320px) {
+    body {
+        font-size: clamp(10px, 3vw, 12px);
+    }
+    
+    .header {
+        width: 98%;
+        height: clamp(40px, 12vw, 60px);
+        border-radius: clamp(8px, 2vw, 12px);
+        padding: clamp(4px, 1vw, 6px);
+    }
+    
+    .header .logo-container {
+        gap: clamp(4px, 1vw, 8px);
+    }
+    
+    .header .right-icons i {
+        width: clamp(12px, 3vw, 14px);
+        height: clamp(12px, 3vw, 14px);
+    }
+    
+    .hero-text p {
+        font-size: clamp(8px, 1.5vw, 9px);
+        max-width: clamp(280px, 90vw, 100px);
+    }
+    
+    .primary-cta {
+        width: 100%;
+        max-width: 200px;
+        height: clamp(30px, 8vw, 40px);
+        font-size: clamp(10px, 2.5vw, 12px);
+    }
+    
+    .social-heading {
+        font-size: clamp(24px, 6vw, 32px);
+    }
+    
+    .shorts-heading, .videos-heading {
+        font-size: clamp(20px, 5vw, 24px);
+    }
+    
+    .videos-heading {
+        margin-bottom: clamp(16px, 4vw, 24px);
+    }
+    
+    .short-card {
+        min-width: clamp(120px, 40vw, 160px);
+        max-width: clamp(140px, 45vw, 180px);
+        height: clamp(200px, 70vw, 280px);
+    }
+    
+    .video-card {
+        min-width: clamp(120px, 40vw, 160px);
+        max-width: clamp(140px, 45vw, 180px);
+        height: clamp(120px, 40vw, 160px);
+    }
+    
+    .short-card img, .video-card img {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        top: auto;
+        left: auto;
+    }
+    
+    .short-card .text-content .title,
+    .video-card .text-content .title {
+        font-size: clamp(10px, 2.8vw, 12px);
+    }
+    
+    .short-card .text-content .description,
+    .video-card .text-content .description {
+        font-size: clamp(7px, 1.8vw, 9px);
+    }
+    
+    .play-icon {
+        width: clamp(24px, 8vw, 32px);
+        height: clamp(24px, 8vw, 32px);
+    }
+    
+    .play-icon div {
+        border-top: clamp(6px, 1.5vw, 8px) solid transparent;
+        border-bottom: clamp(6px, 1.5vw, 8px) solid transparent;
+        border-left: clamp(10px, 2.5vw, 12px) solid white;
+    }
+    
+    .short-card .text-xl, .video-card .text-xl {
+        font-size: clamp(12px, 3vw, 14px);
+    }
+    
+    .footer {
+        font-size: clamp(8px, 2vw, 10px);
+    }
+
+    .news-ticker {
+        height: 48px;
+        font-size: clamp(10px, 2.5vw, 12px);
+        top: calc(100% - 60px);
+        backdrop-filter: blur(6px);
+        border-radius: 16px;
+    }
+}
+
+.icon-fallback {
+    display: none;
+    font-size: clamp(10px, 2.5vw, 12px);
+    color: var(--text-white);
+}
+
+.feather-icon:not(:empty) + .icon-fallback {
+    display: none;
+}
+
+.feather-icon:empty + .icon-fallback {
+    display: inline;
+}
+
+.footer-logo-container {
+    display: flex;
+    justify-content: center;
+    gap: clamp(16px, 4vw, 24px);
+    margin: clamp(16px, 4vw, 24px) 0;
+}
+
+.footer-logo {
+    width: clamp(40px, 10vw, 60px);
+    height: clamp(40px, 10vw, 60px);
+    object-fit: contain;
+}
+
+@media (max-width: 640px) {
+    .footer h2 {
+        font-size: clamp(20px, 6vw, 24px);
+    }
+    .footer h1 {
+        font-size: clamp(20px, 6vw, 24px);
+    }
+    .footer p.disclaimer-text {
+        font-size: clamp(10px, 3vw, 12px);
+        line-height: 1.4;
+        max-width: 100%;
+    }
+    .footer p.gamble-text {
+        font-size: clamp(10px, 3vw, 12px);
+        line-height: 1.2;
+        max-width: 100%;
+    }
+}
+
+.social-content-section {
+    margin-top: calc(-60% * 868px);
+}
+
+@media (max-width: 1024px) {
+    .social-content-section {
+        margin-top: calc(-20% * 560px);
+    }
+}
+
+@media (max-width: 320px) {
+    .social-content-section {
+        margin-top: calc(-20% * 420px);
+    }
+}
+
+.h-divider {
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 100%;
+    position: relative;
+}
+
+.h-divider .shadow {
+    overflow: hidden;
+    height: 16px;
+}
+
+.h-divider .shadow:after {
+    content: '';
+    display: block;
+    margin: -20px auto 0;
+    width: 100%;
+    height: 20px;
+    border-radius: 125px/8px;
+    box-shadow: 0 0 8px 2px rgba(232, 232, 232, 0.9), 0 0 12px 4px rgba(233, 233, 233, 0.5);
+}
+
+    </style>
+</head>
+<body>
+  <div class="bg-pattern"></div>
+
+<!-- Header -->
+<header class="header fixed z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
+        <div class="flex items-center w-1/3 left-icons">
+            <nav class="flex space-x-4 sm:space-x-6">
+                <a href="#" class="text-[#dfefff]/95 uppercase font-semibold text-xs sm:text-sm tracking-wide nav-active">Home</a>
+                <a href="#" class="text-[#dfefff]/95 uppercase font-semibold text-xs sm:text-sm tracking-wide">Gameplay</a>
+                <a href="#" class="text-[#dfefff]/95 uppercase font-semibold text-xs sm:text-sm tracking-wide">Giveaway</a>
+                <a href="#" class="text-[#dfefff]/95 uppercase font-semibold text-xs sm:text-sm tracking-wide">Offers</a>
+            </nav>
+        </div>
+        <div class="flex justify-center w-1/3 logo-container">
+            <img src="img/Sh4ner_White 1.png" alt="Logo" class="h-8 sm:h-10 rounded-full object-cover">
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2 w-1/3 justify-end right-icons">
+            <a href="https://x.com" target="_blank" aria-label="X" class="feather-icon">
+                <svg class="text-white w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 5.9199219 6 L 20.582031 27.375 L 6.2304688 44 L 9.4101562 44 L 21.986328 29.421875 L 31.986328 44 L 44 44 L 28.681641 21.669922 L 42.199219 6 L 39.029297 6 L 27.275391 19.617188 L 17.933594 6 L 5.9199219 6 z M 9.7167969 8 L 16.880859 8 L 40.203125 42 L 33.039062 42 L 9.7167969 8 z"></path>
+                </svg>
+            </a>
+            <span class="icon-fallback">X</span>
+            <a href="https://youtube.com" target="_blank" aria-label="YouTube" class="feather-icon"><i data-feather="youtube" class="text-white w-4 h-4 sm:w-5 sm:h-5"></i></a>
+            <span class="icon-fallback">YT</span>
+            <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="feather-icon"><i data-feather="instagram" class="text-white w-4 h-4 sm:w-5 sm:h-5"></i></a>
+            <span class="icon-fallback">IG</span>
+            <a href="https://telegram.org" target="_blank" aria-label="Telegram" class="feather-icon"><i data-feather="send" class="text-white w-4 h-4 sm:w-5 sm:h-5"></i></a>
+            <span class="icon-fallback">TG</span>
+            <button class="cta-button flex items-center uppercase font-bold tracking-wider">
+                Follow on Kick!
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-32 pb-12 sm:pb-16 relative">
+    <section class="hero" aria-labelledby="hero-title">
+        <div class="image-right">
+            <img src="IMG/rightdice.png" alt="Right Image">
+        </div>
+        <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 flex justify-center">
+            <div class="w-full mt-4 sm:mt-0 hero-text">
+                <h1 id="hero-title" class="hero-title uppercase font-extrabold leading-tight tracking-wide mb-4 sm:mb-6">
+                    SH4NER | S4R
+                </h1>
+                <p class="text-[12px] sm:text-[px] leading-relaxed max-w-[20px] mb-6 sm:mb-8 mx-auto">
+                    From insane max wins to jaw-dropping roulette hits, Sh4ne_r has taken the streaming game to the next level. Now a Kick Partner and teamed up with legends like UncleJ & Sue, he's known as the King of Max Wins and for turning chaos into unforgettable content. Sponsored by BC.Game, Partnered with Kick
+                </p>
+                <button class="primary-cta rounded-xl uppercase font-bold text-sm sm:text-base flex items-center justify-center">
+                    USE SH4NER CODE
+                </button>
+            </div>
+        </div>
+        <div class="image-left">
+            <img src="IMG/leftdice.png" alt="Left Image">
+        </div>
+        
+        <div class="cookie-bar" style="width: 600px; height: auto; transform: rotate(0deg); opacity: 1; position: fixed; bottom: 13%; left: 50%; transform: translateX(-50%); border-radius: 32px; padding: 24px; background: rgba(0, 14, 15, 0.5); backdrop-filter: blur(10px); display: flex; flex-direction: column; color: white; font-family: Arial, sans-serif; z-index: 1000;">
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <span style="margin-right: 5px; font-size: 12px; font-weight: bold;">Your Privacy</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17.75C12.69 17.75 13.25 17.19 13.25 16.5C13.25 15.81 12.69 15.25 12 15.25C11.31 15.25 10.75 15.81 10.75 16.5C10.75 17.19 11.31 17.75 12 17.75ZM16 9V6C16 3.79 14.21 2 12 2C9.79 2 8 3.79 8 6V9H7V20C7 21.1 7.9 22 9 22H15C16.1 22 17 21.1 17 20V9H16ZM15 9H9V6C9 4.34 10.34 3 12 3C13.66 3 15 4.34 15 6V9Z" fill="#A7ECFF"/>
+                </svg>
+            </div>
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <p style="margin: 0; font-size: 11px; text-align: left; flex-grow: 1;">We use cookies and other technologies to help personalize content, tailor and measure ads, and provide a better experience. By clicking "OK" or turning on a cookie preference, you agree to this as outlined in our <a href="/cookie-policy" style="color: #A7ECFF; text-decoration: underline;">Cookie Policy</a>. To change preferences or withdraw consent, please update your <a href="/cookie-preferences" style="color: #A7ECFF; text-decoration: underline;">cookie preferences</a>.</p>
+                <div style="display: flex; gap: 2px; margin-left: auto; margin-left: 6px;">
+                    <button style="padding: 5px 10px; font-size: 10px; border: 1px solid #A7ECFF; border-radius: 8px; background: #66666600; color: white; cursor: pointer; width: 78px;">Preferences</button>
+                    <button style="padding: 5px 10px; font-size: 10px; border: none; border-radius: 5px; background: #A7ECFF; color: rgb(8, 7, 7); cursor: pointer; width: 78px;">OK</button>
+                </div>
+            </div>
+        </div>
+        
+        <section class="news-ticker" aria-label="News Ticker">
+            <ul style="font-size: 14px; padding: 8px 0;">
+                <li>Sh4ner hits $15,000 win on latest stream!</li>
+                <li>Join the next live stream on Kick: kick.com/sh4ner</li>
+                <li>New exclusive bonus code: SH4NER</li>
+                <li>Follow Sh4ner on X for real-time updates</li>
+                <li>Partnered with BC.Game for epic giveaways</li>
+                <!-- Duplicated content for seamless looping -->
+                <li>Sh4ner hits $15,000 win on latest stream!</li>
+                <li>Join the next live stream on Kick: kick.com/sh4ner</li>
+                <li>New exclusive bonus code: SH4NER</li>
+                <li>Follow Sh4ner on X for real-time updates</li>
+                <li>Partnered with BC.Game for epic giveaways</li>
+            </ul>
+        </section>
+    </section>
+</main>
+
+<!-- Social Content Section -->
+<section class="social-content-section" aria-labelledby="social-heading">
+    <div class="flex flex-col items-center mb-8 sm:mb-12">
+        <h2 id="social-heading" class="social-heading">S4R | Social Media Content</h2>
+    </div>
+    <h3 class="shorts-heading">S4R | Shorts</h3>
+    <div class="carousel-wrapper">
+        <div class="shorts-container">
+            <article class="short-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/434x901/1" alt="Short: 15$ to 15,000$ — reaction clip" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <div class="title">15$ TO 15,000$</div>
+                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+            <article class="short-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/434x901/2" alt="WANTED — reaction and rake" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <div class="title">WANTED</div>
+                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+            <article class="short-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/434x901/3" alt="This is huge chat — massive win" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <p class="description">“THIS IS HUGE CHAT!!” — Sh4ner called it out loud, and seconds later the reels exploded with a massive hit. The hype was unreal, the chat went crazy, and this turned into one of the wildest wins of the week 💥<br>Pure chaos, pure adrenaline, and a moment you won't forget.<br>🔔 Subscribe for more highlights every week<br>🎥 Full streams on Kick: kick.com/sh4ner<br>#sh4ner #slots #casino #bigwin #jackpot #printing #thisishugeTHIS</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+            <article class="short-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/434x901/4" alt="Short highlight — clip" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <div class="title">134...</div>
+                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+            <article class="short-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/434x901/5" alt="Highlight — clip" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <div class="title">HIGHLIGHT CLIP</div>
+                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+            <article class="short-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/434x901/7" alt="Mega Win — clip" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <div class="title">MEGA WIN</div>
+                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="carousel-shadow carousel-shadow-left"></div>
+        <div class="carousel-shadow carousel-shadow-right"></div>
+    </div>
+<div class="billboard">
+    <img src="img/bill.jpg" alt="Billboard" class="billboard image">
+    <div class="billboard-text">
+        <img src="img/logo.webp" alt="Top Vector Image" class="billboard top-vector-image">
+
+
+        <div class="billboard title">CASINO</div>
+        <div class="billboard playnow">Play Now</div>
+        <p class="billboard description">
+            Powered by BC.Game 🎰 SH4NER goes live every day bringing nonstop casino action, massive wins, and exclusive giveaways. Over $500K already given to the community! Join the daily live now for free cash, bonuses, and rewards!
+        </p>
+        <img src="img/code.png" alt="Vector Image" class="billboard vector-image" >
+        <p class="billboard subtext">
+            bcgame.st/i-sh4ner-n
+        </p>
+    </div>
+</div>
+
+    <h3 class="videos-heading">S4R | Video</h3>
+    <div class="carousel-wrapper">
+        <div class="videos-container">
+            <article class="video-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/320x320/1" alt="Long form: On fire this week" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <div class="title">ON FIRE THIS WEEK</div>
+                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+            <article class="video-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/320x320/2" alt="Long form: +50,000$ this week" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <div class="title">+50,000$ THIS WEEK</div>
+                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+            <article class="video-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/320x320/3" alt="Long form: 26,000$ this week" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <div class="title">26,000$ THIS WEEK</div>
+                    <p class="description">“THIS IS HUGE CHAT!!” — Sh4ner called it out loud, and seconds later the reels exploded with a massive hit. The hype was unreal, the chat went crazy, and this turned into one of the wildest wins of the week 💥<br>Pure chaos, pure adrenaline, and a moment you won't forget.<br>🔔 Subscribe for more highlights every week<br>🎥 Full streams on Kick: kick.com/sh4ner<br>#sh4ner #slots #casino #bigwin #jackpot #printing #thisishugeTHIS</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+            <article class="video-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/320x320/4" alt="Long form: Epic Session" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <div class="title">EPIC SESSION</div>
+                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+            <article class="video-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/320x320/4" alt="Long form: Epic Session" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <div class="title">EPIC SESSION</div>
+                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+            <article class="video-card rounded-xl relative overflow-hidden">
+                <img src="http://static.photos/gaming/320x320/4" alt="Long form: Epic Session" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="text-content">
+                    <div class="title">EPIC SESSION</div>
+                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon border-2 border-white/50 flex items-center justify-center">
+                        <div class="w-0 h-0"></div>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="carousel-shadow carousel-shadow-left"></div>
+        <div class="carousel-shadow carousel-shadow-right"></div>
+    </div>
+</section>
 <div class="bg-pattern"></div>
     <div class="mobile-warning">
         <p>Please use a desktop or laptop computer to view this website. Mobile access is not supported at this time.</p>
     </div>
-    <div class="content-wrapper">
-        <!-- Existing content: header, main, sections, footer -->
-        <header class="header fixed z-50">
-            <!-- ... header content ... -->
-        </header>
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-32 pb-12 sm:pb-16 relative">
-            <!-- ... main content ... -->
-        </main>
-        <!-- ... other sections ... -->
-        <footer class="footer">
-            <!-- ... footer content ... -->
-        </footer>
+   
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -34,3 +1543,81 @@
             }
         });
     </script>
+<!-- Contact Section -->
+<section class="contact-section" aria-labelledby="contact-heading">
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div class="h-divider">
+            <div class="shadow"></div>
+        </div>
+        <h2 id="contact-heading" class="social-heading">Contact S4R Team</h2>
+        <form class="max-w-3xl mx-auto">
+            <p class="text-center text-[16px] sm:text-[18px] text-white font-['Poppins'] mb-8">Reach out to the S4R team for collaboration!</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <input type="text" id="first-name" name="first-name" placeholder="First Name" class="w-full p-3 rounded-lg bg-[rgba(3,16,22,0.8)] border border-gray-500 text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-gray-500" required>
+                </div>
+                <div>
+                    <input type="text" id="last-name" name="last-name" placeholder="Last Name" class="w-full p-3 rounded-lg bg-[rgba(3,16,22,0.8)] border border-gray-500 text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-gray-500" required>
+                </div>
+            </div>
+            <div class="mb-4">
+                <input type="email" id="email" name="email" placeholder="Email" class="w-full p-3 rounded-lg bg-[rgba(3,16,22,0.8)] border border-gray-500 text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-gray-500" required>
+            </div>
+            <div class="mb-4">
+                <input type="tel" id="phone" name="phone" placeholder="Phone Number" class="w-full p-3 rounded-lg bg-[rgba(3,16,22,0.8)] border border-gray-500 text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-gray-500">
+            </div>
+            <div class="mb-4">
+                <textarea id="message" name="message" rows="5" placeholder="Message" class="w-full p-3 rounded-lg bg-[rgba(3,16,22,0.8)] border border-gray-500 text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-gray-500" required></textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="w-full primary-cta rounded-xl uppercase font-bold text-sm sm:text-base">Send Message</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Footer Section -->
+<footer class="footer">
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div class="h-divider">
+            <div class="shadow"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-divider w-full mb-8"></div>
+            <h2 class="text-[#FFFF00] font-bold text-[48px] text-center font-['Poppins']">Disclaimer</h2>
+            <p class="text-[16px] text-center font-['Poppins'] font-normal mt-4 max-w-2xl mx-auto disclaimer-text">
+                sh4ner.com is an independent igaming news site and casino comparison service. Every effort is made to ensure that the bonus offers listed here are accurate and up-to-date. However, we accept no responsibility for inaccuracies or errors. Please check terms and conditions before deciding to take a bonus.
+            </p>
+            <h1 class="text-[#FF0000] font-bold text-[48px] text-center font-['Poppins'] mt-8">Gamble Responsibly</h1>
+            <p class="text-[16px] text-center font-['Poppins'] font-normal mt-4 max-w-2xl mx-auto gamble-text">
+                Please gamble responsibly. Gambling can have a serious impact on your life. Only gamble with money you can afford to lose.
+            </p>
+            <div class="footer-logo-container">
+                <img src="img/75a66996c8988a839e73f363914e85fba6db1e10.png" alt="Logo 1" class="footer-logo">
+                <img src="img/1be4be065fedecbf48f67c6f6b5dc6ffa0b85cfb.png" alt="Logo 2" class="footer-logo">
+                <img src="img/b787bdceb376f6ca4007ae8c5de2c7bcea17b7ef.png" alt="Logo 3" class="footer-logo">
+                <img src="img/164ae989bb0b639138196e2074669754ca16ba85.png" alt="Logo 4" class="footer-logo">
+            </div>
+            <p class="text-[12px] text-center font-['Poppins'] font-normal mt-4">
+                © 2025 SH4NE_R. All rights reserved. 
+                <a href="#" class="underline">Privacy Policy</a> | 
+                <a href="#" class="underline">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                feather.replace();
+            } catch (e) {
+                console.error('Feather Icons failed to load:', e);
+                document.querySelectorAll('.feather-icon').forEach(function(el) {
+                    el.classList.add('empty');
+                });
+            }
+            AOS.init();
+        });
+    </script>
+</body>
+</html> 
